@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,31 +30,70 @@ public class TradesController
 	public ResponseEntity createTrade(@RequestBody String tradeStr) throws JsonParseException, JsonMappingException, IOException 
 	{
 		System.out.println(tradeStr);
-//		ObjectMapper mapper = new ObjectMapper();
-//		Trade trade = mapper.readValue(tradeStr, Trade.class);
+		ObjectMapper mapper = new ObjectMapper();
+		Trade trade = mapper.readValue(tradeStr, Trade.class);
 //		
 		HttpStatus response = HttpStatus.CREATED;
-//		for (Trade existingtrade: trades) 
-//		{
-//			if (existingtrade.getId() == trade.getId())
-//			{
-//				response = HttpStatus.BAD_REQUEST;
-//			}
-//		}
-//		if(response == HttpStatus.CREATED)
-//		{
-//			trades.add(trade);
-//		}		
-//      
+		for (Trade existingtrade: trades) 
+		{
+			if (existingtrade.getId() == trade.getId())
+			{
+				response = HttpStatus.BAD_REQUEST;
+			}
+		}
+		if(response == HttpStatus.CREATED)
+		{
+			trades.add(trade);
+		}		
+      
       return new ResponseEntity<>(response);
 	  }
 	
+	@RequestMapping(value = "/{id}" ,method = RequestMethod.GET)	
+	public ResponseEntity getTrade(@PathVariable int id) throws JsonParseException, JsonMappingException, IOException 
+	{
+		for (Trade existingtrade: trades)
+		{
+			if (existingtrade.getId() == id)
+			{
+				return new ResponseEntity<>(existingtrade, HttpStatus.OK);
+			}
+		}
+
+		return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET)	
-	public ResponseEntity getAllTrades(@RequestBody String tradeStr) throws JsonParseException, JsonMappingException, IOException 
+	public ResponseEntity getAllTrades() throws JsonParseException, JsonMappingException, IOException 
 	{
 		  Collections.sort(trades);
 
 		 return new ResponseEntity<>(trades, HttpStatus.OK);
 	}
+	
+	
+	
+	@RequestMapping(value = "/users/{userID}" ,method = RequestMethod.GET)	
+	public ResponseEntity getTrades(@PathVariable int id) throws JsonParseException, JsonMappingException, IOException 
+	{
+		boolean found = false;
+		List<Trade> rettrades = new ArrayList<Trade>();
+		for (Trade existingtrade: trades)
+		{
+			if (existingtrade.getId() == id)
+			{
+				rettrades.add(existingtrade);
+				found = true;
+			}
+		}
+		if (found)
+		{
+			  Collections.sort(rettrades);
+			return new ResponseEntity<>(rettrades, HttpStatus.OK);
+		}
+	
+		return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+	}
+	
 	
 }
