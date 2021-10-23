@@ -2,7 +2,7 @@ package com.hackerrank.stocktrade.model;
 
 import java.sql.Timestamp;
 
-public class Trade {
+public class Trade  implements Comparable{
     private Long id;
     private String type;
     private User user;
@@ -79,4 +79,11 @@ public class Trade {
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
+    
+
+	@Override
+	public int compareTo(Object o) {
+		 return (int) (this.getId()-((Trade)o).getId());
+		
+	}
 }
