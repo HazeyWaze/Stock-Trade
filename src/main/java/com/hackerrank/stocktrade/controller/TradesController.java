@@ -17,9 +17,9 @@ import com.hackerrank.stocktrade.model.Trade;
 @RequestMapping(value = "/trades")
 public class TradesController
 {
-   private  List<Trade> trades = new ArrayList<Trade>();
+   public static List<Trade> trades = new ArrayList<Trade>();
    
-	@RequestMapping(value = "/trades", consumes = "application/json" ,method = RequestMethod.POST)	
+	@RequestMapping( consumes = "application/json" ,method = RequestMethod.POST)	
 	public ResponseEntity createTrade(@RequestBody Trade trade) 
 	{
 		System.out.println("here");
