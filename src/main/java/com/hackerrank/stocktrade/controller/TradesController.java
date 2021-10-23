@@ -96,7 +96,7 @@ public class TradesController
 		return new ResponseEntity<>( HttpStatus.NOT_FOUND);
 	}
 	
-	@RequestMapping(value = "stocks/{stockSymbol}?type={tradeType}&start={startDate}&end={endDate}" ,method = RequestMethod.GET)	
+	@RequestMapping(value = "/stocks/{stockSymbol}?type={tradeType}&start={startDate}&end={endDate}" ,method = RequestMethod.GET)	
 	public ResponseEntity getTradesFiltered(@PathVariable String stockSymbol,@PathVariable String type, @PathVariable Timestamp start, Timestamp end) throws JsonParseException, JsonMappingException, IOException 
 	{
 		boolean found = false;
