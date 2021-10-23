@@ -26,7 +26,7 @@ public class TradesController
    public static List<Trade> trades = new ArrayList<Trade>();
    
    
-	@RequestMapping( consumes = "text/plain" ,method = RequestMethod.POST)	
+	@RequestMapping( consumes = "application/json" ,method = RequestMethod.POST)	
 	public ResponseEntity createTrade(@RequestBody String tradeStr) throws JsonParseException, JsonMappingException, IOException 
 	{
 		System.out.println(tradeStr);
@@ -74,13 +74,13 @@ public class TradesController
 	
 	
 	@RequestMapping(value = "/users/{userID}" ,method = RequestMethod.GET)	
-	public ResponseEntity getTrades(@PathVariable int id) throws JsonParseException, JsonMappingException, IOException 
+	public ResponseEntity getTrades(@PathVariable int userID) throws JsonParseException, JsonMappingException, IOException 
 	{
 		boolean found = false;
 		List<Trade> rettrades = new ArrayList<Trade>();
 		for (Trade existingtrade: trades)
 		{
-			if (existingtrade.getId() == id)
+			if (existingtrade.getUser().getId() == userID)
 			{
 				rettrades.add(existingtrade);
 				found = true;

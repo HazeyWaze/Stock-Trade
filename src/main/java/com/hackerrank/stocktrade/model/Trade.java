@@ -2,6 +2,10 @@ package com.hackerrank.stocktrade.model;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Trade  implements Comparable{
     private Long id;
     private String type;
@@ -9,6 +13,8 @@ public class Trade  implements Comparable{
     private String symbol;
     private Integer shares;
     private Float price;
+    @Column(name = "timestamp")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Timestamp timestamp;
     
     public Trade() {
