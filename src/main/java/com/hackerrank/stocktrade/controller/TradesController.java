@@ -1,6 +1,7 @@
 package com.hackerrank.stocktrade.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -95,5 +96,34 @@ public class TradesController
 		return new ResponseEntity<>( HttpStatus.NOT_FOUND);
 	}
 	
+	@RequestMapping(value = "stocks/{stockSymbol}?type={tradeType}&start={startDate}&end={endDate}" ,method = RequestMethod.GET)	
+	public ResponseEntity getTradesFiltered(@PathVariable String stockSymbol,@PathVariable String type, @PathVariable Timestamp start, Timestamp end) throws JsonParseException, JsonMappingException, IOException 
+	{
+		boolean found = false;
+		List<Trade> rettrades = new ArrayList<Trade>();
+		for (Trade existingtrade: trades)
+		{
+			if (existingtrade.getSymbol().equals(stockSymbol))
+			{
+				found = true;
+				if (existingtrade.getType().equals(type) && isDateInRangeInc(existingtrade.getTimestamp(), start, end))
+				{
+					rettrades.add(existingtrade);	
+				}
+			}
+		}
+		if (found)
+		{
+			Collections.sort(rettrades);
+			return new ResponseEntity<>(rettrades, HttpStatus.OK);
+		}
+	
+		return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+	}
+	
+	private boolean isDateInRangeInc(Timestamp dateToCheck, Timestamp startDate, Timestamp endDate)
+	{
+		 return dateToCheck.compareTo(startDate) >= 0 && dateToCheck.compareTo(endDate) <=0;
+	}
 	
 }
